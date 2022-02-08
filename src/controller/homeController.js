@@ -1,16 +1,9 @@
-import connection from '../configs/conectDB'
-let getHomePage = (req, res) => {
+import pool from '../configs/conectDB'
+
+let getHomePage = async (req, res) => {
     //logic
-    let data = []
-    connection.query(
-        'SELECT * FROM `nodejs-htn`',
-        function (err, results, fields) {
-            console.log('>>>check mysql')
-            console.log(results); // results contains rows returned by server
-            results.map((row) => { return row });
-        }
-    );
-    return res.render('index.ejs', { dataspace: JSON.stringify(data) });
+    const [rows, fields] = await pool.execute('SELECT * FROM `nodejs-htn`');
+    return res.render('index.ejs', { dataSpace: rows })
 }
 let getAboutPage = (req, res) => {
     //logic
